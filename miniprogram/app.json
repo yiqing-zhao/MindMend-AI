@@ -1,0 +1,21 @@
+{
+    "pages": [
+        "pages/index/index",
+        "pages/chatbot/index"
+    ],
+    "window": {
+        "backgroundTextStyle": "dark",
+        "navigationBarBackgroundColor": "#fff",
+        "navigationBarTitleText": "Weixin",
+        "navigationBarTextStyle": "white",
+        "navigationStyle": "custom",
+        "renderingMode": "seperated"
+    },
+    "usingComponents": {
+        "t-navbar": "tdesign-miniprogram/navbar/navbar",
+        "t-icon": "tdesign-miniprogram/icon/icon",
+        "t-textarea": "tdesign-miniprogram/textarea/textarea"
+    },
+    "sitemapLocation": "sitemap.json",
+    "lazyCodeLoading": "requiredComponents"
+}

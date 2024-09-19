@@ -1,0 +1,57 @@
+<!--index.wxml-->
+<view class="container">
+    <view class="navbar-container">
+        <t-navbar class="custom-navbar">
+            <view slot="left">
+                <t-icon size="40px" bind:tap="onBack" name="chevron-left" class="custom-capsule__icon back" />
+            </view>
+            <view slot="left" class="custom-title">
+                Consultant chat
+            </view>
+        </t-navbar>
+    </view>
+
+    <view class="scroll-list" style="top: {{14-moveTop}}vh; height: {{73.5-deductHeight}}vh; min-height: 50vh;">
+        <view wx:if="{{chatList.length==0}}" class="row" id="prompt">
+            <view>
+                <view class="message msg-prompt">
+                    <text style="font-weight: bold;">Try these prompts :)</text>
+                    <text style="flex-wrap:wrap; color: #667085; line-height: 30px; padding: 10px 0;">I am not feeling well...what should I do \nI have a trouble about... \nI hate this world because... \nI got lots of pressure due to... \nI feel hopeless and anxiety about... \nWhat kind of activities I should join \nHow to improve the quality of sleep \nHow to be happier</text>
+                    <view style="background-color: #f1f2ea; padding: 10px;">
+                        <text style="font-size: 12px; color: #667085; line-height: 20px;">Try to write your feeling and thoughts as detail as you can to help us better understand and support you</text>
+                    </view>
+                </view>
+            </view>
+        </view>
+        <block wx:for="{{chatList}}" wx:for-index="index" wx:for-item="item" wx:key="item">
+            <view class="{{login.id==item.msgId?'row row-self':'row'}}">
+                <view>
+                    <view class="{{login.id==item.msgId?'message msg-self':'message msg-friend'}}">
+                        <text>{{item.message}}</text>
+                    </view>
+                </view>
+            </view>
+        </block>
+        <view wx:if="{{pendingReply}}" class="row">
+            <view>
+                <view class="message msg-friend">
+                    <dot>...</dot>
+                </view>
+            </view>
+        </view>
+    </view>
+
+    <view class="footer" style="bottom: {{bottom}}px;">
+        <view class="footer-row">
+            <view class="emoji-btn">
+                <t-icon size="3.22vh" name="smile" bind:tap="onBack" class="smile-icon"></t-icon>
+            </view>
+            <view class="input-box">
+                <textarea class="text-area" placeholder-class="placeholder" show-confirm-bar="{{false}}" cursor-spacing="30" maxlength="500" auto-height="false" placeholder="How is your feeling?" bindinput="inputClick" value="{{content}}" bindkeyboardheightchange="onFocus" bindfocus="onFocus" bindblur="onBlur"></textarea>
+            </view>
+            <view class="send-btn">
+                <t-icon size="3.22vh" name="send" bind:tap="sendClick" class="send-icon"></t-icon>
+            </view>
+        </view>
+    </view>
+</view>

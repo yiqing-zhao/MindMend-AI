@@ -1,0 +1,22 @@
+<!--index.wxml-->
+<view class="container">
+    <image class="bg" mode="widthFix" src="../../images/bg.png"></image>
+    <image class="layer" src="../../images/layer.png"></image>
+    <t-navbar class="custom-navbar">
+        <view slot="left" class="custom-title">MindMend</view>
+    </t-navbar>
+    <view class="sub-title">
+        Unlocking Mental Wellness with AI:
+    </view>
+    <view class="main-title">
+        Your Daily Language Our Insight
+    </view>
+
+    <view class="diagnostic">
+        <image style="width: 26%" mode="widthFix" src="../../images/button.png" bind:tap="gotoDiagnosticPage"></image>
+    </view>
+
+    <view class="chatbot">
+        <button class="button" bind:tap="gotoBotPage">Chat with consultant</button>
+    </view>
+</view>
