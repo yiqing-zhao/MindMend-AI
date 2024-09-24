@@ -11,7 +11,7 @@
         </t-navbar>
     </view>
 
-    <view class="scroll-list" style="top: {{14-moveTop}}vh; height: {{73.5-deductHeight}}vh; min-height: 50vh;">
+    <view class="scroll-list" style="top: {{14-moveTop}}vh; height: {{73.5-deductHeight}}vh; min-height: 50vh;" scroll-y="true" id="scrollList">
         <view wx:if="{{chatList.length==0}}" class="row" id="prompt">
             <view>
                 <view class="message msg-prompt">
@@ -23,7 +23,7 @@
                 </view>
             </view>
         </view>
-        <block wx:for="{{chatList}}" wx:for-index="index" wx:for-item="item" wx:key="item">
+        <block wx:for="{{chatList}}" wx:for-index="index" wx:for-item="item" wx:key="item" id="item{{index}}">
             <view class="{{login.id==item.msgId?'row row-self':'row'}}">
                 <view>
                     <view class="{{login.id==item.msgId?'message msg-self':'message msg-friend'}}">

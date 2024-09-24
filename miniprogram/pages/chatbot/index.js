@@ -14,8 +14,10 @@ Component({
     moveTop: 0,
     deductHeight: 0,
     bottom: 0,
+    botReply: "",
     // 聊天信息
     chatList: [],
+    scrollTop: 0,
   },
   methods: {
     onBack() {
@@ -36,7 +38,7 @@ Component({
         .select("#prompt")
         .boundingClientRect((rect) => {
           const move =
-            ((rect.height + e.detail.height) / screenHeight) * 100 - 86;
+            ((rect.height + e.detail.height) / screenHeight) * 100 - 76;
           console.log(move);
           this.setData({ moveTop: move >= 0 ? move : 0 });
         })
@@ -58,7 +60,10 @@ Component({
       };
       var botMsg = {
         msgId: "bot",
-        message: "testReply",
+        message:
+          botReply == ""
+            ? "I'm sorry to hear that you're not feeling good, Sally. Do you want to talk about what's been bothering you? Sometimes sharing can make a big difference."
+            : botReply,
         type: "text",
       };
       this.setData(
@@ -66,7 +71,18 @@ Component({
           chatList: list.concat(msg),
         },
         () => {
-          //   that.scrollToBottom();
+          wx.createSelectorQuery()
+            .select("#scrollList")
+            .boundingClientRect(function (rect) {
+              wx.pageScrollTo({
+                scrollTop: rect.height,
+                duration: 100, // 滑动速度
+              });
+              that.setData({
+                scrollTop: rect.height - that.data.scrollTop,
+              });
+            })
+            .exec();
           that.setData({
             content: "",
           });
@@ -76,23 +92,45 @@ Component({
         this.setData({ pendingReply: true });
       }, 10);
       list = list.concat(msg);
+      wx.request({
+        url:
+          "https://mindmend.openai.azure.com/openai/deployments/gpt-4o/chat/completions?api-version=2024-02-15-preview",
+        headers: {
+          "Content-Type": "application/json",
+          "api-key": "<<Your API Key>>",
+        },
+        method: "POST",
+        data: {
+          messages: [
+            {
+              role: "system",
+              content: [
+                {
+                  type: "text",
+                  text:
+                    "You are a psychological consultant AI bot to support people.",
+                },
+              ],
+            },
+          ],
+          temperature: 0.7,
+          top_p: 0.95,
+          max_tokens: 800,
+        },
+        dataType: "json",
+        success(res) {
+          this.setData({
+            botReply: res.data,
+          });
+        },
+      });
+
       setTimeout(() => {
-        this.setData(
-          { chatList: list.concat(botMsg), pendingReply: false },
-          () => {
-            that.scrollToBottom();
-          }
-        );
-      }, 4000);
-    },
-    // 滑动到最底部
-    scrollToBottom() {
-      setTimeout(() => {
-        wx.pageScrollTo({
-          scrollTop: 200000,
-          duration: 3,
+        this.setData({
+          chatList: list.concat(botMsg),
+          pendingReply: false,
         });
-      }, 600);
+      }, 4000);
     },
   },
 });
